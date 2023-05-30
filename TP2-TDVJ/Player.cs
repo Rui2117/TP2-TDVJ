@@ -32,7 +32,7 @@ namespace TP2_TDVJ
         {
             Movement();
             Gravity(deltatime);
-
+            Die();
             position += velocity;
         }
 
@@ -58,6 +58,13 @@ namespace TP2_TDVJ
             velocity.Y -= jumppower * (float)(deltatime);
         }
 
+        public void Die()
+        {
+            if (isdead == true)
+            {
+
+            }
+        }
         private void Jump()
         {
             velocity.Y = jumppower;
