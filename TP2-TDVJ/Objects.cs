@@ -14,17 +14,11 @@ namespace TP2_TDVJ
     {
         protected Texture2D _texture;
 
+        public int height, width;
         public Vector2 position;
         public Vector2 velocity;
         public Color color = Color.White;
-
-        public Rectangle rectangle
-        {
-            get
-            {
-                return new Rectangle ((int)position.X, (int)position.Y, _texture.Width, _texture.Height);
-            }
-        }
+        public Rectangle hitbox { get => new Rectangle((int)position.X, (int)position.Y, width, height); }
         
         public Objects(Texture2D texture)
         {
@@ -44,34 +38,34 @@ namespace TP2_TDVJ
         #region Colloision
         protected bool IsTouchingLeft(Objects sprite)
         {
-            return this.rectangle.Right + this.velocity.X > sprite.rectangle.Left &&
-              this.rectangle.Left < sprite.rectangle.Left &&
-              this.rectangle.Bottom > sprite.rectangle.Top &&
-              this.rectangle.Top < sprite.rectangle.Bottom;
+            return this.hitbox.Right + this.velocity.X > sprite.hitbox.Left &&
+              this.hitbox.Left < sprite.hitbox.Left &&
+              this.hitbox.Bottom > sprite.hitbox.Top &&
+              this.hitbox.Top < sprite.hitbox.Bottom;
         }
 
         protected bool IsTouchingRight(Objects sprite)
         {
-            return this.rectangle.Left + this.velocity.X < sprite.rectangle.Right &&
-              this.rectangle.Right > sprite.rectangle.Right &&
-              this.rectangle.Bottom > sprite.rectangle.Top &&
-              this.rectangle.Top < sprite.rectangle.Bottom;
+            return this.hitbox.Left + this.velocity.X < sprite.hitbox.Right &&
+              this.hitbox.Right > sprite.hitbox.Right &&
+              this.hitbox.Bottom > sprite.hitbox.Top &&
+              this.hitbox.Top < sprite.hitbox.Bottom;
         }
 
         protected bool IsTouchingTop(Objects sprite)
         {
-            return this.rectangle.Bottom + this.velocity.Y > sprite.rectangle.Top &&
-              this.rectangle.Top < sprite.rectangle.Top &&
-              this.rectangle.Right > sprite.rectangle.Left &&
-              this.rectangle.Left < sprite.rectangle.Right;
+            return this.hitbox.Bottom + this.velocity.Y > sprite.hitbox.Top &&
+              this.hitbox.Top < sprite.hitbox.Top &&
+              this.hitbox.Right > sprite.hitbox.Left &&
+              this.hitbox.Left < sprite.hitbox.Right;
         }
 
         protected bool IsTouchingBottom(Objects sprite)
         {
-            return this.rectangle.Top + this.velocity.Y < sprite.rectangle.Bottom &&
-              this.rectangle.Bottom > sprite.rectangle.Bottom &&
-              this.rectangle.Right > sprite.rectangle.Left &&
-              this.rectangle.Left < sprite.rectangle.Right;
+            return this.hitbox.Top + this.velocity.Y < sprite.hitbox.Bottom &&
+              this.hitbox.Bottom > sprite.hitbox.Bottom &&
+              this.hitbox.Right > sprite.hitbox.Left &&
+              this.hitbox.Left < sprite.hitbox.Right;
         }
 
         #endregion

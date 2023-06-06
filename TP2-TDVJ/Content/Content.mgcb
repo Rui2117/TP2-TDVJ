@@ -25,11 +25,6 @@
 /processorParam:TextureFormat=Color
 /build:guy.png
 
-#begin Mapa1.txt
-/importer:
-/processor:
-/build:Mapa1.txt
-
 #begin tile.png
 /importer:TextureImporter
 /processor:TextureProcessor

@@ -12,16 +12,18 @@ namespace TP2_TDVJ
 {
     public class Platform : Objects
     {
-        public Platform(Texture2D texture) : base(texture)
+        public Platform(Texture2D texture, int height, int width, Vector2 position) : base(texture)
         {
             this._texture = texture;
+            this.width = height;
+            this.height = width;
+            this.position = position;
             this.color = Color.White;
         }
 
-        public void DrawPlatform(SpriteBatch spriteBatch, Rectangle rectangle)
+        public void DrawPlatform(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_texture, rectangle, Color.White);
-
+            spriteBatch.Draw(_texture, hitbox, Color.White);
         }
     }
 }

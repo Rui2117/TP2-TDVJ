@@ -12,8 +12,7 @@ namespace TP2_TDVJ
 {
     public class Player : Objects
     {
-        Rectangle hitbox { get => new Rectangle((int) position.X, (int) position.Y, width, height); } 
-        int speed, jumppower, height, width;
+        int speed, jumppower;
         bool grounded, isdead;
 
         public Player(Texture2D texture, Vector2 position) : base(texture)
@@ -22,18 +21,20 @@ namespace TP2_TDVJ
             this.position = position;
             this.velocity = Vector2.Zero;
             this.speed = 6;
-            this.jumppower = -300;
+            this.jumppower = 10;
             this.height = 100;
             this.width = 100;
             this.grounded = false;
             this.isdead = false;
         }
-        public void UpdatePlayer(double deltatime)
+        public void UpdatePlayer(double deltatime, List<Objects> list)
         {
             Movement();
             Gravity(deltatime);
-            Die();
+            
+            CheckColision(list);
             position += velocity;
+            Die();
         }
 
 
@@ -55,7 +56,7 @@ namespace TP2_TDVJ
 
         public void Gravity(double deltatime)
         {
-            velocity.Y -= jumppower * (float)(deltatime);
+            velocity.Y += (jumppower*2) * (float)(deltatime);
         }
 
         public void Die()
@@ -67,9 +68,28 @@ namespace TP2_TDVJ
         }
         private void Jump()
         {
-            velocity.Y = jumppower;
+            velocity.Y -= jumppower;
             grounded = false;
 
+        }
+        
+        private void CheckColision(List<Objects> objects)
+        {
+            foreach (Objects aux in objects)
+            {
+                if (aux == this)
+                    continue;
+
+                if ((this.velocity.X > 0 && this.IsTouchingLeft(aux)) ||
+                    (this.velocity.X < 0 & this.IsTouchingRight(aux)))
+                    this.velocity.X = 0;
+
+                if ((this.velocity.Y > 0 && this.IsTouchingTop(aux)) || (this.velocity.Y < 0 & this.IsTouchingBottom(aux)))
+                {
+                    this.velocity.Y = 0;
+                    grounded = true;
+                }
+            }
         }
 
     }
