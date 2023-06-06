@@ -3,33 +3,4 @@
                                    
        XXXX  XXXXXXXX              
 XXXXXXXXXXX  XXXXXXXX   XXXXXXXXXXX
-XXXXXXXXXXX  XXXXXXXX   XXXXXXXXXXX
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                    
+XXXXXXXXXXX  XXXXXXXX   XXXXXXXXXXX 

@@ -21,7 +21,7 @@ namespace TP2_TDVJ
             this.color = Color.White;
         }
 
-        public void DrawPlatform(SpriteBatch spriteBatch)
+        public void DrawPlatform(SpriteBatch spriteBatch, int x, int y)
         {
             spriteBatch.Draw(_texture, hitbox, Color.White);
         }
