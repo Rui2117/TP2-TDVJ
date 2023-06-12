@@ -25,5 +25,12 @@ namespace TP2_TDVJ
         {
             spriteBatch.Draw(_texture, hitbox, Color.White);
         }
+
+
+        public override void Update(double deltatime, List<Objects> list)
+        {
+            
+        }
+
     }
 }

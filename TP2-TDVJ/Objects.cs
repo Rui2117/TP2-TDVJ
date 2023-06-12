@@ -25,7 +25,7 @@ namespace TP2_TDVJ
             _texture = texture;
         }
 
-        public virtual void Update(GameTime gameTime, List<Objects> objects)
+        public virtual void Update(double gameTime, List<Objects> objects)
         {
 
         }

@@ -73,6 +73,11 @@ namespace TP2_TDVJ
 
         }
         
+        private void Shoot()
+        {
+
+        }
+
         private void CheckColision(List<Objects> objects)
         {
             foreach (Objects aux in objects)

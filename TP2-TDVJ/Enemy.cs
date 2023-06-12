@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Graphics.PackedVector;
@@ -25,15 +26,14 @@ namespace TP2_TDVJ
         }
 
 
-        public void UpdatePlayer(double deltatime, List<Objects> list)
+        public override void Update(double deltatime, List<Objects> list)
         {
             CheckColision(list);
-            Die();
         }
 
-        private void Die()
+        private void Die(List<Objects> list)
         {
-
+            list.Remove(this);
         }
 
         private void CheckColision(List<Objects> objects)
@@ -46,8 +46,8 @@ namespace TP2_TDVJ
                 }
 
                 if ((this.velocity.X > 0 && this.IsTouchingLeft(aux)) || (this.velocity.X < 0 & this.IsTouchingRight(aux)))
-                { 
-                    this.velocity.X = 0;
+                {
+                    this.Die(objects);
                 }
 
                 if ((this.velocity.Y > 0 && this.IsTouchingTop(aux)) || (this.velocity.Y < 0 & this.IsTouchingBottom(aux)))
