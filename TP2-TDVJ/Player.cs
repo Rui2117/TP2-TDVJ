@@ -15,10 +15,14 @@ namespace TP2_TDVJ
     public class Player : Objects
     {
         int speed, jumppower;
-        bool grounded, isdead;
+        bool grounded, isdead, soundPlayed;
         private ContentManager content { get; set; }
 
         private bool isShootKeyPressed = false;
+        private List<Texture2D> animationFrames;
+        private int currentFrame;
+        private float frameTime;
+        private float elapsedTime;
 
         public Player(Texture2D texture, Vector2 position, ContentManager content) : base(texture)
         {
@@ -32,6 +36,21 @@ namespace TP2_TDVJ
             this.grounded = false;
             this.isdead = false;
             this.content = content;
+
+
+            this.animationFrames = new List<Texture2D>();
+            // Adicione as texturas dos quadros da animação à lista
+            animationFrames.Add(content.Load<Texture2D>("run_01v2"));
+            animationFrames.Add(content.Load<Texture2D>("run_02v2"));
+            animationFrames.Add(content.Load<Texture2D>("run_03v2"));
+            animationFrames.Add(content.Load<Texture2D>("run_04v2"));
+            animationFrames.Add(content.Load<Texture2D>("run_05v2"));
+            animationFrames.Add(content.Load<Texture2D>("run_06v2"));
+            //animationFrames.Add(Content.Load<Texture2D>("run_07"));
+            animationFrames.Add(content.Load<Texture2D>("run_08v2"));
+            currentFrame = 0;
+            frameTime = 0.2f; // Tempo entre cada quadro da animação
+            elapsedTime = 0f;
         }
         public void UpdatePlayer(double deltatime, List<Objects> list, List<Bullet> bullets)
         {
@@ -43,9 +62,21 @@ namespace TP2_TDVJ
             position += velocity;
             if (position.Y > 500)
             {
-                Die();
+                isdead = true;
             }
+            if (position.Y > 2500)
+            {
+                Game1.Instance.Exit();
+            }
+
             Die();
+
+            elapsedTime += (float)deltatime;
+            if (elapsedTime >= frameTime)
+            {
+                currentFrame = (currentFrame + 1) % animationFrames.Count;
+                elapsedTime = 0f;
+            }
         }
 
         public void UpdateInput(List<Bullet> bullets)
@@ -54,7 +85,8 @@ namespace TP2_TDVJ
             if (Keyboard.GetState().IsKeyDown(Keys.LeftControl))
             {
                 Shoot(bullets);
-                //isShootKeyPressed = true;
+                isShootKeyPressed = true;
+
             }
             else if (Keyboard.GetState().IsKeyUp(Keys.LeftControl))
             {
@@ -64,8 +96,7 @@ namespace TP2_TDVJ
 
         public void DrawPlayer(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_texture, hitbox, Color.White);
-
+            spriteBatch.Draw(animationFrames[currentFrame], position, Color.White);
         }
 
         public void Movement()
@@ -90,18 +121,25 @@ namespace TP2_TDVJ
         {
             if (isdead == true)
             {
-
+                if (soundPlayed == false)
+                {
+                    speed = 0;
+                    Sounds.lose.Play(volume: 0.1f, pitch: 0.0f, pan: 0.0f);
+                }
+                soundPlayed = true;
             }
+
         }
         private void Jump()
         {
             velocity.Y -= jumppower;
             grounded = false;
-
+            Sounds.jump.Play(volume: 0.1f, pitch: 0.0f, pan: 0.0f);
         }
         
         private void Shoot(List<Bullet> bullets)
         {
+            Sounds.shoot.Play(volume: 0.1f, pitch: 0.0f, pan: 0.0f);
             if (Keyboard.GetState().IsKeyDown(Keys.LeftControl))
             {
                 // Cria uma bala com base na posição atual do jogador
@@ -125,7 +163,7 @@ namespace TP2_TDVJ
                 if ((this.velocity.X > 0 && this.IsTouchingLeft(aux)) || (this.velocity.X < 0 & this.IsTouchingRight(aux)))
                 {
                     this.velocity.X = 0;
-                    this.isdead = true;
+                    //this.isdead = true;
                 }
 
                 if ((this.velocity.Y > 0 && this.IsTouchingTop(aux)) || (this.velocity.Y < 0 & this.IsTouchingBottom(aux)))

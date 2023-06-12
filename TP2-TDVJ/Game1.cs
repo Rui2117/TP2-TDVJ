@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -18,6 +19,8 @@ namespace TP2_TDVJ
         private int nrLinhas = 0;
         private int nrColunas = 0;
         public bool started = false;
+
+        public static Game Instance { get; private set; }
 
         //public const int tileSize = 64;
         private SpriteFont font;
@@ -40,6 +43,7 @@ namespace TP2_TDVJ
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+            Instance = this;
         }
 
         protected override void Initialize()
@@ -143,7 +147,8 @@ namespace TP2_TDVJ
             listOfObjects.Add(platform29);
             platform30 = new Platform(Content.Load<Texture2D>("tile"), new Vector2(2700, 200));
             listOfObjects.Add(platform30);
-            
+
+            Sounds.LoadSounds(Content);
             // TODO: use this.Content to load your game content here
         }
 
