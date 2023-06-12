@@ -26,9 +26,9 @@ namespace TP2_TDVJ
         }
 
 
-        public override void Update(double deltatime, List<Objects> list)
+        public override void Update(List<Objects> list, List<Bullet> bullets)
         {
-            CheckColision(list);
+            CheckColision(list, bullets);
         }
 
         private void Die(List<Objects> list)
@@ -36,7 +36,7 @@ namespace TP2_TDVJ
             list.Remove(this);
         }
 
-        private void CheckColision(List<Objects> objects)
+        private void CheckColision(List<Objects> objects, List<Bullet> bullets)
         {
             foreach (Objects aux in objects)
             {
@@ -47,7 +47,20 @@ namespace TP2_TDVJ
 
                 if ((this.velocity.X > 0 && this.IsTouchingLeft(aux)) || (this.velocity.X < 0 & this.IsTouchingRight(aux)))
                 {
-                    this.Die(objects);
+                    objects.Remove(this);
+                }
+
+                if ((this.velocity.Y > 0 && this.IsTouchingTop(aux)) || (this.velocity.Y < 0 & this.IsTouchingBottom(aux)))
+                {
+                    this.velocity.Y = 0;
+                    grounded = true;
+                }
+            }
+            foreach (Bullet aux in bullets)
+            {
+                if ((this.velocity.X > 0 && this.IsTouchingLeft(aux)) || (this.velocity.X < 0 & this.IsTouchingRight(aux)))
+                {
+                    objects.Remove(this);
                 }
 
                 if ((this.velocity.Y > 0 && this.IsTouchingTop(aux)) || (this.velocity.Y < 0 & this.IsTouchingBottom(aux)))

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Graphics.PackedVector;
 using Microsoft.Xna.Framework.Input;
@@ -14,8 +16,11 @@ namespace TP2_TDVJ
     {
         int speed, jumppower;
         bool grounded, isdead;
+        private ContentManager content { get; set; }
 
-        public Player(Texture2D texture, Vector2 position) : base(texture)
+        private bool isShootKeyPressed = false;
+
+        public Player(Texture2D texture, Vector2 position, ContentManager content) : base(texture)
         {
             this._texture = texture;
             this.position = position;
@@ -26,17 +31,36 @@ namespace TP2_TDVJ
             this.width = 100;
             this.grounded = false;
             this.isdead = false;
+            this.content = content;
         }
-        public void UpdatePlayer(double deltatime, List<Objects> list)
+        public void UpdatePlayer(double deltatime, List<Objects> list, List<Bullet> bullets)
         {
             Movement();
+            UpdateInput(bullets);
             Gravity(deltatime);
             
             CheckColision(list);
             position += velocity;
+            if (position.Y > 500)
+            {
+                Die();
+            }
             Die();
         }
 
+        public void UpdateInput(List<Bullet> bullets)
+        {
+            // Dispara uma bala quando a tecla de espaço é pressionada
+            if (Keyboard.GetState().IsKeyDown(Keys.LeftControl))
+            {
+                Shoot(bullets);
+                //isShootKeyPressed = true;
+            }
+            else if (Keyboard.GetState().IsKeyUp(Keys.LeftControl))
+            {
+                isShootKeyPressed = false;
+            }
+        }
 
         public void DrawPlayer(SpriteBatch spriteBatch)
         {
@@ -50,7 +74,10 @@ namespace TP2_TDVJ
             {
                 Jump();
             }
-
+            //if (Keyboard.GetState().IsKeyDown(Keys.E))
+            //{
+            //    Shoot(bullets);
+            //}
             velocity.X = speed;
         }
 
@@ -73,9 +100,19 @@ namespace TP2_TDVJ
 
         }
         
-        private void Shoot()
+        private void Shoot(List<Bullet> bullets)
         {
+            if (Keyboard.GetState().IsKeyDown(Keys.LeftControl))
+            {
+                // Cria uma bala com base na posição atual do jogador
+                Vector2 bulletPosition = new Vector2(position.X + position.Y);
 
+                Texture2D bulletTexture = content.Load<Texture2D>("bullet_04");
+
+                Bullet bullet = new Bullet(bulletPosition, bulletTexture);
+
+                bullets.Add(bullet);
+            }
         }
 
         private void CheckColision(List<Objects> objects)

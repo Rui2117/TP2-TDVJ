@@ -27,7 +27,7 @@ namespace TP2_TDVJ
         }
 
 
-        public override void Update(double deltatime, List<Objects> list)
+        public override void Update(List<Objects> list, List<Bullet> bullets)
         {
             
         }

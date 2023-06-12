@@ -27,6 +27,7 @@ namespace TP2_TDVJ
         public Camera camera;
 
         List<Objects> listOfObjects = new List<Objects>();
+        List<Bullet> bullets= new List<Bullet>();
         public Player player;
         public Enemy enemy1, enemy2, enemy3, enemy4;
         public Platform platform, platform1, platform2, platform3, platform4, platform5, platform6, 
@@ -72,7 +73,7 @@ namespace TP2_TDVJ
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            player = new Player(Content.Load<Texture2D>("guy"), new Vector2(10, 10));
+            player = new Player(Content.Load<Texture2D>("guy"), new Vector2(10, 10), Content);
 
             enemy1 = new Enemy(Content.Load<Texture2D>("man-run_01"), new Vector2(600, 100));
             listOfObjects.Add(enemy1);
@@ -148,6 +149,7 @@ namespace TP2_TDVJ
 
         protected override void Update(GameTime gameTime)
         {
+            KeyboardState currentKeyboardState = Keyboard.GetState();
             if (started==true)
             {
                 double deltaTime = gameTime.ElapsedGameTime.TotalSeconds;
@@ -156,17 +158,22 @@ namespace TP2_TDVJ
                     Exit();
                 }
             
-                player.UpdatePlayer(deltaTime, listOfObjects);
-            
-                foreach(Objects aux in listOfObjects)
+                player.UpdatePlayer(deltaTime, listOfObjects, bullets);
+
+                foreach (Objects aux in listOfObjects)
                 {
-                    aux.Update(deltaTime, listOfObjects);
+                    aux.Update(listOfObjects, bullets);
                 }
 
                 camera.Follow(player);
                 // TODO: Add your update logic here
 
                 base.Update(gameTime);
+            }
+
+            foreach (Bullet bullet in bullets)
+            {
+                bullet.Update(gameTime);
             }
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Space))
@@ -215,6 +222,11 @@ namespace TP2_TDVJ
 
             enemy1.DrawEnemy(_spriteBatch);
             enemy2.DrawEnemy(_spriteBatch);
+
+            foreach (Bullet bullet in bullets)
+            {
+                bullet.Draw(_spriteBatch, player.position);
+            }
 
             _spriteBatch.End();
             base.Draw(gameTime);            

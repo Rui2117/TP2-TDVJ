@@ -25,7 +25,7 @@ namespace TP2_TDVJ
             _texture = texture;
         }
 
-        public virtual void Update(double gameTime, List<Objects> objects)
+        public virtual void Update(List<Objects> objects, List<Bullet> bullets)
         {
 
         }
@@ -68,6 +68,37 @@ namespace TP2_TDVJ
               this.hitbox.Left < sprite.hitbox.Right;
         }
 
+        protected bool IsTouchingLeft(Bullet sprite)
+        {
+            return this.hitbox.Right + this.velocity.X > sprite.hitbox.Left &&
+              this.hitbox.Left < sprite.hitbox.Left &&
+              this.hitbox.Bottom > sprite.hitbox.Top &&
+              this.hitbox.Top < sprite.hitbox.Bottom;
+        }
+
+        protected bool IsTouchingRight(Bullet sprite)
+        {
+            return this.hitbox.Left + this.velocity.X < sprite.hitbox.Right &&
+              this.hitbox.Right > sprite.hitbox.Right &&
+              this.hitbox.Bottom > sprite.hitbox.Top &&
+              this.hitbox.Top < sprite.hitbox.Bottom;
+        }
+
+        protected bool IsTouchingTop(Bullet sprite)
+        {
+            return this.hitbox.Bottom + this.velocity.Y > sprite.hitbox.Top &&
+              this.hitbox.Top < sprite.hitbox.Top &&
+              this.hitbox.Right > sprite.hitbox.Left &&
+              this.hitbox.Left < sprite.hitbox.Right;
+        }
+
+        protected bool IsTouchingBottom(Bullet sprite)
+        {
+            return this.hitbox.Top + this.velocity.Y < sprite.hitbox.Bottom &&
+              this.hitbox.Bottom > sprite.hitbox.Bottom &&
+              this.hitbox.Right > sprite.hitbox.Left &&
+              this.hitbox.Left < sprite.hitbox.Right;
+        }
         #endregion
     }
 
